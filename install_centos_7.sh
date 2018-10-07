@@ -70,17 +70,21 @@ sed -i "s@/usr/local/mysql/lib@${MysqlLibPath}@g" ./framework/tarscpp/CMakeLists
 
 
 echo "================Start Build================"
+cd ./framework/
+patch -p1 < ../0001-modify-to-use-mysql.so.patch
+cd -
+
 cd ./framework/build/
 chmod u+x build.sh
 ./build.sh all
 ./build.sh install
 cd -
 
-exit 0
+#exit 0
 
 ##Tars数据库环境初始化
 
-echo "Sed in Framework Sql"
+echo "=================Sed in Framework Sql================"
 cd ./framework/sql/
 sed -i "s/    192.168.2.131/${MachineIp}/g" `grep     192.168.2.131 -rl ./*`
 sed -i "s/    db.tars.com/${MachineIp}/g" `grep     db.tars.com -rl ./*`
